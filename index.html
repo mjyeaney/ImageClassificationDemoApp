@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Image Classification Demo, v.0.1</title>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+</head>
+
+<body>
+
+    <div id="menu">
+        <ul>
+            <li id="nav_inspection">Inspection</li>
+            <li id="nav_settings">Settings</li>
+            <li id="nav_logs">Logs</li>
+            <li id="nav_about">About</li>
+        </ul>
+    </div>
+
+    <div id="inspection_panel" class="content">
+        <h3>Inspection</h3>
+
+        <label for="deviceList">Select device to use:</label>
+        <select name="deviceList" id="deviceList"></select>
+
+        <div class="mediaDisplay">
+            <video id="previewStream" width="800" height="450" autoplay></video>
+            <canvas id="cameraImage" width="800" height="450"></canvas>
+        </div>
+
+        <div class="analysisResults">
+            <p id="resultsStatus">Please wait while the photo is analyzed <span class="ellipsis-anim"><span>.</span><span>.</span><span>.</span></span></p>
+            <div id="resultsPlaceholder"></div>
+        </div>
+
+        <div class="mediaButtons">
+            <button id="snap" class="commandButton">Analyze Photo</button>
+            <button id="clear" class="commandButton">Clear Photo</button>
+        </div>
+    </div>
+
+    <div id="settings_panel" class="content">
+        <h3>General Settings</h3>
+        <div class="formField">
+            <label for="availableDevices">Default camera device:</label>
+            <select name="availableDevices" id="availableDevices"></select>
+        </div>
+
+        <div class="formField">
+            <label id="modelThresholdPreview" for="modelThreshold">Threshold:<span></span></label>
+            <input name="modelThreshold" id="modelThreshold" type="range" value="" step="0.01" max="1.0" min="0.0" />
+        </div>
+
+        <div class="formField">
+            <label for="kernelCommand">Kernel command:</label>
+            <input name="kernelCommand" id="kernelCommand" type="text" value="" />
+        </div>
+
+        <div class="formField">
+            <label for="kernelArguments">Kernel args:</label>
+            <input name="kernelArguments" id="kernelArguments" type="text" value="" />
+        </div>
+
+        <div class="formField">
+            <label for="logFilePath">Log file path:</label>
+            <input name="logFilePath" id="logFilePath" type="text" value="" />
+        </div>
+
+        <h3>Model Settings</h3>
+        <p>Last model update: <span id="modelLastUpdate"></span></p>
+        <p>Last update status: <span id="modelLastUpdateStatus"></span></p>
+        <button class="commandButton">Update Model</button>
+    </div>
+    
+    <div id="logs_panel" class="content">
+        <h3>Application Logs</h3>
+        <textarea id="logViewer" ></textarea>
+        <button class="commandButton" id="btnClearLog">Clear Log Viewer</button>
+    </div>
+
+    <div id="about_panel" class="content">
+        <h3>Image Classification Demo, v.0.1</h3>
+        
+        <p>Copyright &copy;2019, Microsoft, Inc. All Rights Reserved.</p>
+
+        <p>This sample application is licensed under the MIT open source license. Source code is available at 
+            <a id="gitHubLink" target="__blank" href="https://github.com/mjyeaney/ImageClassificationDemoApp">https://github.com/mjyeaney/ImageClassificationDemoApp.git</a>.</p>
+    </div>
+
+    <div id="statusBar">
+        <ul class="left">
+            <li id="coreStatus">Ready</li>
+        </ul>
+
+        <ul class="right">
+            <li>Not Connected</li>
+        </ul>
+    </div>
+
+    <script src="./index.js" type="text/javascript"></script>
+</body>
+</html>

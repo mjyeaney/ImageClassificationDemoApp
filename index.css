@@ -1,0 +1,197 @@
+* { 
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body { 
+    font-family: 'Segoe UI Light', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    background-color: #202020;
+    color: #fff;
+    cursor: default;
+}
+
+button {
+    font-family: 'Segoe UI Light', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 13px;
+}
+
+input, select, textarea {
+    font-family: 'Segoe UI Light', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    background-color: #202020;
+    color: #fff;
+    padding: .5em;
+    border: 1px solid #a0a0a0;
+    box-sizing: content-box;
+}
+
+h1 { 
+    font-weight: lighter;
+    font-size: 1.5em;
+}
+
+h3 {
+    font-weight: 100;
+    margin-bottom: 1em;
+}
+
+a:hover, a:visited, a:active, a { color: #6bf; }
+
+table, p, ul, ol, dl { margin-bottom: 1em; }
+
+#menu {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 15em;
+    bottom: 2em;
+    background-color: #303030;
+}
+
+#menu ul { 
+    list-style-type: none;
+    margin-bottom: 0;
+}
+
+#menu ul li { 
+    display: block;
+    padding: .75em;
+    cursor: pointer;
+}
+
+#menu ul li.seperator {
+    height: 1px;
+    padding: 0;
+    background-color: #aaa;
+    margin: .5em .5em;
+}
+
+#menu ul li:hover {
+    background-color: #404040;
+}
+
+.content { 
+    position: absolute;
+    right: 0;
+    left: 15em;
+    bottom: 2em;
+    top: 0;
+    padding: 1em;
+    display: none;
+}
+
+#statusBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2em;
+    background-color: #1369ac;
+    color: #fff;
+    padding: 0 .5em;
+}
+
+#statusBar ul {
+    list-style-type: none;
+    margin-bottom: 0;
+}
+
+#statusBar ul li {
+    display: inline-block;
+    line-height: 2.5em;
+    font-size: .775em;
+}
+
+#statusBar ul.left {
+    float: left;
+}
+
+#statusBar ul.right {
+    float: right;
+}
+
+.commandButton { 
+    border: 2px solid #555;
+    width: 8em;
+    height: 3em;
+    color: #fff;
+    background-color: #555;
+    cursor: pointer;
+    margin-right: 1em;
+}
+.commandButton:focus { outline: none; }
+.commandButton:hover { border-color: #ccc; }
+
+.formField {
+    margin-bottom: 1em; 
+}
+.formField label { display: block; width: 20em; padding: .25em 0; }
+.formField input, .formField select { display: block; width: 20em; }
+.formField label#modelThresholdPreview span { float: right; margin-right: -1em; }
+
+#previewStream, #cameraImage { display: block; width: 800px; height: 450px; }
+#previewStream.results { visibility: hidden; }
+#cameraImage { margin-top: -30em; transition: all ease .5s; }
+#cameraImage.results { width: 400px; height: 225px; }
+
+.analysisResults { 
+    position: absolute;
+    right: 1em;
+    top: 7.25em;
+    width: 30em;
+    display: none;
+    height: 30em;
+    z-index: -1;
+}
+.analysisResults.results { display: block; }
+.analysisResults ul { list-style-type: none; }
+.analysisResults li span.barGraph {
+    display: block;
+    transition: width ease-in-out .25s;
+    height: .5em;
+    background-color: #39f;
+    border-radius: 4px;
+    width: 0em;
+    margin: 1em 0;
+}
+.analysisResults #resultsStatus { line-height: 1em; }
+.analysisResults #thresholdMarker { width: 30em; border-right: 2px dashed red; }
+
+.mediaDisplay { margin: 1em 0; }
+.mediaButtons { position: absolute; top: 39em; left: 1em; }
+
+#logViewer { 
+    width: 64em; 
+    height: 40em; 
+    display: block; 
+    margin-bottom: 1em; 
+    font-family: 'Courier New', Courier, monospace; 
+    font-size: .875em;
+    resize: none;
+}
+
+/* Elipsis animation keyframes */
+
+.ellipsis-anim { font-size: 2em; }
+.ellipsis-anim span {
+    opacity: 0;
+    animation: ellipsis-dot 1s infinite;
+}
+
+.ellipsis-anim span:nth-child(1) {
+    animation-delay: 0.0s;
+}
+.ellipsis-anim span:nth-child(2) {
+    animation-delay: 0.1s;
+}
+.ellipsis-anim span:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+@keyframes ellipsis-dot {
+    0% { opacity: 0; }
+   50% { opacity: 1; }
+  100% { opacity: 0; }
+}
