@@ -1,0 +1,20 @@
+2019-03-08T11:24:17.426Z: INFO - Starting up
+2019-03-08T11:24:17.833Z: INFO - Starting default kernel
+2019-03-08T11:24:17.834Z: INFO - Staring kernel process
+2019-03-08T11:24:17.844Z: INFO - Kernel successfully started
+2019-03-08T11:24:17.845Z: INFO - Populating list of available media devices
+2019-03-08T11:24:17.848Z: INFO - Setting up media preview for device: f3945d4e585d244ab1bc7c74795675d710e406c05c17654dabaab54fe684944b
+2019-03-08T11:24:17.851Z: INFO - Initializing UI
+2019-03-08T11:24:17.847Z: INFO - Selecting default media device
+2019-03-08T11:24:18.045Z: ERROR - Traceback (most recent call last):
+  File "./kernel/main.py", line 25, in <module>
+    INITIAL_FILE_LIST = dict ([(f, None) for f in os.listdir (INPUT_FILE_LOCATION)])
+FileNotFoundError: [WinError 3] The system cannot find the path specified: './data/images'
+
+2019-03-08T11:24:19.455Z: INFO - Changing selected media device...
+2019-03-08T11:24:19.455Z: INFO - Setting up media preview for device: 68e93ebc44dd99babe19df4e08523402d44377612e4952f333fa2e6bf46c6eda
+2019-03-08T11:24:21.437Z: INFO - Acquiring image for analysis - updating UI state
+2019-03-08T11:24:21.454Z: INFO - Reading camera pixel data into Buffer
+2019-03-08T11:24:21.514Z: INFO - Writing picture data to file
+2019-03-08T11:24:35.694Z: INFO - Loading log viewer content...
+2019-03-08T11:24:40.744Z: INFO - Loading camera inspection content...
