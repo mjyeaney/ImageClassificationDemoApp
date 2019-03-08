@@ -11,6 +11,7 @@ const fs = require("fs");
 const MAX_CHECKS = 20;
 const POLL_INTERVAL_MS = 500;
 const RES_LOG_STARTING_KERNEL = "Starting default kernel";
+const RES_LOG_RESTARTING_KERNEL = "Restarting kernel process";
 const RES_LOG_WRITING_IMG_TO_FILE = "Writing picture data to file";
 const RES_LOG_RESULTS_FILE_NOT_EXIST = "Results file does not exist - checking again";
 const RES_LOG_RESULTS_FILE_EMPTY = "Results file empty - checking again";
@@ -32,6 +33,11 @@ class KernelOperations {
         // Setup error traps for errors, set flags and fail Promise
         this.kernel.on("error", (err) => {
             this.hasKernelError = true;
+        });
+
+        this.kernel.on("close", (err) => {
+            logger.Error(RES_LOG_RESTARTING_KERNEL);
+            this.kernel.Initialize();
         });
     }
 
