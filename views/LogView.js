@@ -4,6 +4,7 @@ Manages the log viewer portion of the app.
 
 */
 
+const $ = require("jquery");
 const logger = require("../services/LoggingProvider");
 
 class LogView {

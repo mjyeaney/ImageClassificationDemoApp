@@ -5,7 +5,6 @@ operator to take a picture, analyze, and display results.
 
 */
 
-const fs = require("fs");
 const $ = require("jquery");
 const logger = require("../services/LoggingProvider");
 const settingsProvider = require("../services/SettingsProvider");
@@ -87,10 +86,12 @@ class InspectionsView {
             let resultBuffer = [];            
             resultBuffer.push("<ul>");
             for (let w in results.weights) {
-                let weight = results.weights[w];
                 let label = results.labels[w];
-                let width = Math.max(0.25, weight.toFixed(1) * 28);
-                resultBuffer.push(`<li>${label}<span class="barGraph" data-width="${width}"></span></li>`);
+                let weight = results.weights[w];                
+                let minWidth = 0.25;
+                let maxWidth = 28;
+                let width = Math.max(minWidth, weight * maxWidth);
+                resultBuffer.push(`<li>${label}<span class="barGraph" data-width="${width.toFixed(1)}"></span></li>`);
             }
             resultBuffer.push("</ul>");
 

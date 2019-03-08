@@ -4,6 +4,7 @@ Manages all settings reading/setting for the application.
 
 */
 
+const $ = require("jquery");
 const settingsProvider = require("../services/SettingsProvider");
 
 class SettingsView {

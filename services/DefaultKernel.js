@@ -5,15 +5,18 @@ Hanldes communication with our kernel;
 */
 
 const spawn = require("child_process").spawn;
-const Logger = require("./LoggingProvider");
-const Settings = require("./SettingsProvider");
+const logger = require("./LoggingProvider");
+const settings = require("./SettingsProvider");
 const emitter = require("events").EventEmitter;
+
+const RES_LOG_KERNEL_STARTUP = "Staring kernel process";
+const RES_LOG_KERNEL_STARTED = "Kernel successfully started";
 
 class DefaultKernel extends emitter {
     Initialize() {
-        Logger.Info("Starting kernel process...");
+        logger.Info(RES_LOG_KERNEL_STARTUP);
 
-        this.child_process = spawn(Settings.KernelCommand, [Settings.KernelArguments]);
+        this.child_process = spawn(settings.KernelCommand, [settings.KernelArguments]);
 
         this.child_process.on("exit", (code, signal) => {
             // Crash!!!
@@ -21,15 +24,15 @@ class DefaultKernel extends emitter {
         });
 
         this.child_process.stdout.on("data", (data) => {
-            Logger.Info(data);
+            logger.Info(data);
         });
 
         this.child_process.stderr.on("data", (data) => {
-            Logger.Error(data);
+            logger.Error(data);
             this.emit("error", data);
         });
 
-        Logger.Info("Kernel successfully started");
+        logger.Info(RES_LOG_KERNEL_STARTED);
     }
 }
 

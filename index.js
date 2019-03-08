@@ -4,16 +4,16 @@
 
 const remote = require("electron").remote;
 const $ = require("jquery");
-const Logger = require("./services/LoggingProvider");
-const SettingsProvider = require("./services/SettingsProvider");
-const InspectionsView = require("./views/InspectionsView");
-const SettingsView = require("./views/SettingsView");
-const LogView = require("./views/LogView");
-const AboutView = require("./views/AboutView");
+const logger = require("./services/LoggingProvider");
+const settings = require("./services/SettingsProvider");
+const inspectionsView = require("./views/InspectionsView");
+const settingsView = require("./views/SettingsView");
+const logView = require("./views/LogView");
+const aboutView = require("./views/AboutView");
 
 let main = async () => {
 
-    Logger.Info("Starting up");
+    logger.Info("Starting up");
 
     let isFullScreen = false;
     let currentWindow = remote.getCurrentWindow();
@@ -42,12 +42,12 @@ let main = async () => {
     // Workflow / service creation
     //
 
-    await SettingsProvider.Load();
+    await settings.Load();
 
-    const inspectionUi = new InspectionsView();
-    const settingUi = new SettingsView();
-    const logUi = new LogView();
-    const aboutUi = new AboutView();
+    const inspectionUi = new inspectionsView();
+    const settingUi = new settingsView();
+    const logUi = new logView();
+    const aboutUi = new aboutView();
 
     inspectionUi.EnsureBinding();
     settingUi.EnsureBinding();
@@ -89,14 +89,14 @@ let main = async () => {
         let isNavEvent = (navElements.indexOf(sourceElmId) > -1);
 
         if ((isNavEvent) && (forceSettingsSave)){
-            Logger.Info("Saving settings properties");
+            logger.Info("Saving settings properties");
             await settingUi.Save();            
             forceSettingsSave = false;
         }
 
         switch (navElements.indexOf(sourceElmId)) {
             case 0:
-                Logger.Info("Loading camera inspection content...");
+                logger.Info("Loading camera inspection content...");
                 inspectionUi.Show();
                 settingUi.Hide();
                 logUi.Hide();
@@ -104,7 +104,7 @@ let main = async () => {
                 break;
             
             case 1:
-                Logger.Info("Loading settings content...");
+                logger.Info("Loading settings content...");
                 forceSettingsSave = true;
                 inspectionUi.Hide();
                 settingUi.Show();
@@ -113,7 +113,7 @@ let main = async () => {
                 break;
             
             case 2:
-                Logger.Info("Loading log viewer content...");
+                logger.Info("Loading log viewer content...");
                 inspectionUi.Hide();
                 settingUi.Hide();
                 logUi.Show();
@@ -121,7 +121,7 @@ let main = async () => {
                 break;
             
             case 3:
-                Logger.Info("Loading about content...");
+                logger.Info("Loading about content...");
                 inspectionUi.Hide();
                 settingUi.Hide();
                 logUi.Hide();
@@ -134,7 +134,7 @@ let main = async () => {
     // Startup / bootstrap
     //
 
-    Logger.Info("Initializing UI");
+    logger.Info("Initializing UI");
     inspectionUi.Show();
 };
 
