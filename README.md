@@ -44,6 +44,7 @@ The configuration files for the application use the following schema:
     "ModelThreshold":"-- Sets the cutoff threshold display, used for application-specific features --",
     "KernelCommand":"-- Executable for the compute kernel, defaults to python.exe --",
     "KernelArguments":"-- Arguments to be passed to the compute kernel, defaults to ./kernel/main.py --",
+    "ModelUrl":"-- The URL used to download updates to the scoring model --",
     "ModelLastUpdate":"-- Date/time when the model was last updated --",
     "ModelLastUpdateStatus":"-- Status of the last model update (i.e., successful, failed, etc.) --",
     "LogFilePath":"-- Path to the application log file, defaults to ./data/log.txt --"
