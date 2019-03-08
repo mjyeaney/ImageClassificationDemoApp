@@ -5,6 +5,7 @@ Display the infomration on the "About" screen.
 */
 
 const $ = require("jquery");
+const shell = require("electron").shell;
 const logger = require("../services/LoggingProvider");
 
 const RES_LOG_OPENING_GITHUB = "Opening GitHub link in default browser";

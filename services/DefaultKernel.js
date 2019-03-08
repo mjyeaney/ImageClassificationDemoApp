@@ -11,6 +11,7 @@ const emitter = require("events").EventEmitter;
 
 const RES_LOG_KERNEL_STARTUP = "Staring kernel process";
 const RES_LOG_KERNEL_STARTED = "Kernel successfully started";
+const RES_LOG_KERNEL_SHUTDOWN = "Kernel terminated";
 
 class DefaultKernel extends emitter {
     Initialize() {
@@ -19,7 +20,7 @@ class DefaultKernel extends emitter {
         this.child_process = spawn(settings.KernelCommand, [settings.KernelArguments]);
 
         this.child_process.on("exit", (code, signal) => {
-            // Crash!!!
+            logger.Error(RES_LOG_KERNEL_SHUTDOWN)
             this.emit("close");
         });
 

@@ -9,10 +9,11 @@ const defaultKernel = require("./DefaultKernel");
 const fs = require("fs");
 
 const MAX_CHECKS = 20;
+const POLL_INTERVAL_MS = 500;
 const RES_LOG_STARTING_KERNEL = "Starting default kernel";
 const RES_LOG_WRITING_IMG_TO_FILE = "Writing picture data to file";
-const RES_LOG_RESULTS_FILE_NOT_EXIST = "Results file does not exist";
-const RES_LOG_RESULTS_FILE_EMPTY = "Results file empty";
+const RES_LOG_RESULTS_FILE_NOT_EXIST = "Results file does not exist - checking again";
+const RES_LOG_RESULTS_FILE_EMPTY = "Results file empty - checking again";
 const RES_LOG_RESULTS_FILE_FOUND = "Found populated results file";
 const RES_LOG_RESULTS_FILE_CONTENT = "Results file content:";
 const RES_ERR_MAX_WAITS_EXCEEDED = "Exceeded maximum number of waits; aborting kernel operation.";
@@ -45,22 +46,23 @@ class KernelOperations {
             // 2. Wait for the results file
             const resultsFilePath = `./data/results/${jobId}.json`;
 
-            // Set failure / max error counts for the checks below
-            let checkCount = 0;
-
             // 2a. Check that the file exists
+            let checkCount = 0;
             while ((!fs.existsSync(resultsFilePath)) && (!this.hasKernelError)) {
                 logger.Info(RES_LOG_RESULTS_FILE_NOT_EXIST);
                 checkCount++;
                 if (checkCount > MAX_CHECKS){
                     reject(RES_ERR_MAX_WAITS_EXCEEDED);
+                    return;
                 }
-                await new Promise((resolve) => setTimeout(resolve, 250));
+                await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));
             }
 
+            // Check for kernel errors
             if (this.hasKernelError){
                 this.hasKernelError = false;
                 reject(RES_ERR_KERNEL_FAULT);
+                return;
             }
 
             // 2b. Make sure it has content
@@ -70,24 +72,29 @@ class KernelOperations {
                 checkCount++;
                 if (checkCount > MAX_CHECKS){
                     reject(RES_ERR_MAX_WAITS_EXCEEDED);
+                    return;
                 }
-                await new Promise((resolve) => setTimeout(resolve, 250));
+                await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));
             }
             
+            // Check for kernel errors
             if (this.hasKernelError){
                 this.hasKernelError = false;
                 reject(RES_ERR_KERNEL_FAULT);
+                return;
             }
 
-            logger.Info(RES_LOG_RESULTS_FILE_FOUND);
-
             // 3. Load result data
+            logger.Info(RES_LOG_RESULTS_FILE_FOUND);
             let results = await new Promise((res, rej) => {
                 fs.readFile(resultsFilePath, (err, data) => {
-                    if (err) { rej(err); }
-                    const content = data.toString();
-                    logger.Info(`${RES_LOG_RESULTS_FILE_CONTENT} ${content}`);
-                    res(JSON.parse(content));
+                    if (err) { 
+                        rej(err); 
+                    } else {
+                        const content = data.toString();
+                        logger.Info(`${RES_LOG_RESULTS_FILE_CONTENT} ${content}`);
+                        res(JSON.parse(content));
+                    }
                 });
             });
 

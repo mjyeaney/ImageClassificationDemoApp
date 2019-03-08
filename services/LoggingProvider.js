@@ -39,7 +39,11 @@ class LoggingProvider {
 
         // Notify all subscribers
         for (let i = 0; i < this.listeners.length; i++){
-            this.listeners[i](formattedMessage)
+            try {
+                this.listeners[i](formattedMessage)
+            } catch {
+                // Nothing..move on to next subscriber
+            }
         }
     }
 }

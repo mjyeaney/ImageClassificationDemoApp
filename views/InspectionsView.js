@@ -80,27 +80,32 @@ class InspectionsView {
             let blob = Buffer.from(rawData, 'base64');
 
             // Call kernel operation
-            let results = await this.kernelOperations.SubmitInputJob(blob);
+            try {
+                let results = await this.kernelOperations.SubmitInputJob(blob);
 
-            // Generate label / weight display
-            let resultBuffer = [];            
-            resultBuffer.push("<ul>");
-            for (let w in results.weights) {
-                let label = results.labels[w];
-                let weight = results.weights[w];                
-                let minWidth = 0.25;
-                let maxWidth = 28;
-                let width = Math.max(minWidth, weight * maxWidth);
-                resultBuffer.push(`<li>${label}<span class="barGraph" data-width="${width.toFixed(1)}"></span></li>`);
+                // Generate label / weight display
+                let resultBuffer = [];            
+                resultBuffer.push("<ul>");
+                for (let w in results.weights) {
+                    let label = results.labels[w];
+                    let weight = results.weights[w];                
+                    let minWidth = 0.25;
+                    let maxWidth = 28;
+                    let width = Math.max(minWidth, weight * maxWidth);
+                    resultBuffer.push(`<li>${label}<span class="barGraph" data-width="${width.toFixed(1)}"></span></li>`);
+                }
+                resultBuffer.push("</ul>");
+
+                // update final UI state
+                $("#resultsPlaceholder").html(resultBuffer.join(''));
+                $("#resultsStatus").hide();
+                $("span.barGraph").each(function() { 
+                    $(this).width(`${$(this).data("width")}em`);
+                });
+            } catch (err) {
+                alert(`ERROR: ${err}`);
+                $("#clear").click();        
             }
-            resultBuffer.push("</ul>");
-
-            // update final UI state
-            $("#resultsPlaceholder").html(resultBuffer.join(''));
-            $("#resultsStatus").hide();
-            $("span.barGraph").each(function() { 
-                $(this).width(`${$(this).data("width")}em`);
-            })
         });
 
         $("#clear").on("click", () => {

@@ -38,6 +38,8 @@ def compute_results(inputFile):
 
     with open(f"{OUTPUT_FILE_LOCATION}/{cleanFileName}.json", "a") as resultFile:
 
+        #######################################################################
+
         # simulate some computational work
         time.sleep(2)
 
@@ -53,9 +55,11 @@ def compute_results(inputFile):
                 "No Problems",
                 "Needs cleaned",
                 "Damaged",
-                "Other"
+                "Critical"
             ]
         }
+
+        #######################################################################
 
         # Log outputs...can clean this up later
         logging.info(f"Finished processing {inputFile}...results:")
