@@ -80,6 +80,7 @@ table, p, ul, ol, dl { margin-bottom: 1em; }
     top: 0;
     padding: 1em;
     display: none;
+    overflow-y: auto;
 }
 
 #statusBar {

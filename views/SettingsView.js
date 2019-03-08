@@ -28,6 +28,7 @@ class SettingsView {
         $("#kernelCommand").val(settingsProvider.KernelCommand);
         $("#kernelArguments").val(settingsProvider.KernelArguments);
         $("#logFilePath").val(settingsProvider.LogFilePath);
+        $("#modelUrl").val(settingsProvider.ModelUrl);
         $("#modelLastUpdate").text(settingsProvider.ModelLastUpdate);
         $("#modelLastUpdateStatus").text(settingsProvider.ModelLastUpdateStatus);
     }
@@ -47,8 +48,7 @@ class SettingsView {
         settingsProvider.KernelCommand = $("#kernelCommand").val();
         settingsProvider.KernelArguments = $("#kernelArguments").val();
         settingsProvider.LogFilePath = $("#logFilePath").val();
-        settingsProvider.ModelLastUpdate = $("#modelLastUpdate").text();
-        settingsProvider.ModelLastUpdateStatus = $("#modelLastUpdateStatus").text();
+        settingsProvider.ModelUrl = $("#modelUrl").val();
         await settingsProvider.Save();
     }
 }

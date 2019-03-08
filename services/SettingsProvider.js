@@ -15,6 +15,7 @@ class SettingsProvider {
         this.ModelThreshold = "1.0";
         this.KernelCommand = "";
         this.KernelArguments = "";
+        this.ModelUrl = "";
         this.ModelLastUpdate = "Unknown";
         this.ModelLastUpdateStatus = "Unknown";
         this.LogFilePath = "./data/log.txt";
@@ -30,6 +31,7 @@ class SettingsProvider {
                     this.ModelThreshold = settingsBlob.ModelThreshold;
                     this.KernelCommand = settingsBlob.KernelCommand;
                     this.KernelArguments = settingsBlob.KernelArguments;
+                    this.ModelUrl = settingsBlob.ModelUrl;
                     this.ModelLastUpdate = settingsBlob.ModelLastUpdate;
                     this.ModelLastUpdateStatus = settingsBlob.ModelLastUpdateStatus
                     this.LogFilePath = settingsBlob.LogFilePath;
@@ -59,6 +61,7 @@ class SettingsProvider {
             settingsBlob.ModelThreshold = this.ModelThreshold;
             settingsBlob.KernelCommand = this.KernelCommand;
             settingsBlob.KernelArguments = this.KernelArguments;
+            settingsBlob.ModelUrl = this.ModelUrl;
             settingsBlob.ModelLastUpdate = this.ModelLastUpdate;
             settingsBlob.ModelLastUpdateStatus = this.ModelLastUpdateStatus;
             settingsBlob.LogFilePath = this.LogFilePath;
