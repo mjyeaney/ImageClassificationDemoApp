@@ -17,7 +17,7 @@ class DefaultKernel extends emitter {
     Initialize() {
         logger.Info(RES_LOG_KERNEL_STARTUP);
 
-        this.child_process = spawn(settings.KernelCommand, [settings.KernelArguments]);
+        this.child_process = spawn(settings.KernelCommand, ["-u", settings.KernelArguments]);
 
         this.child_process.on("exit", (code, signal) => {
             logger.Error(RES_LOG_KERNEL_SHUTDOWN)

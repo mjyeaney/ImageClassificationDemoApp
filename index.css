@@ -80,7 +80,7 @@ table, p, ul, ol, dl { margin-bottom: 1em; }
     top: 0;
     padding: 1em;
     display: none;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 #statusBar {
@@ -133,20 +133,21 @@ table, p, ul, ol, dl { margin-bottom: 1em; }
 .formField label#modelThresholdPreview span { float: right; margin-right: -1em; }
 
 #previewStream, #cameraImage { display: block; width: 800px; height: 450px; }
-#previewStream.results { visibility: hidden; }
 #cameraImage { margin-top: -30em; transition: all ease .5s; }
-#cameraImage.results { width: 400px; height: 225px; }
 
 .analysisResults { 
     position: absolute;
-    right: 1em;
+    left: 29em;
     top: 7.25em;
     width: 30em;
     display: none;
-    height: 30em;
+    /* height: 30em; */
     z-index: -1;
+    border-right: 2px dashed red;
+    overflow: visible;
+    white-space: nowrap;
+    width: 30em; /* Width dependant on threshold */
 }
-.analysisResults.results { display: block; }
 .analysisResults ul { list-style-type: none; }
 .analysisResults li span.barGraph {
     display: block;
@@ -160,12 +161,16 @@ table, p, ul, ol, dl { margin-bottom: 1em; }
 .analysisResults #resultsStatus { line-height: 1em; }
 .analysisResults #thresholdMarker { width: 30em; border-right: 2px dashed red; }
 
+#cameraImage.results { width: 400px; height: 225px; }
+#previewStream.results { visibility: hidden; }
+.analysisResults.results { display: block; }
+
 .mediaDisplay { margin: 1em 0; }
 .mediaButtons { position: absolute; top: 39em; left: 1em; }
 
 #logViewer { 
     width: 64em; 
-    height: 40em; 
+    height: 39em; 
     display: block; 
     margin-bottom: 1em; 
     font-family: 'Courier New', Courier, monospace; 
