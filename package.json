@@ -8,11 +8,9 @@
   },
   "author": "Michael Yeaney",
   "license": "MIT",
-  "devDependencies": {
-
-  },
+  "devDependencies": {},
   "dependencies": {
-    "electron": "^4.0.0",
+    "electron": "^4.0.8",
     "jquery": "^3.3.1"
   }
 }

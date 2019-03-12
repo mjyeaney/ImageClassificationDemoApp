@@ -69,9 +69,9 @@ class InspectionsView {
             // Update visual state to show results
             logger.Info("Acquiring image for analysis - updating UI state");
             context.drawImage(previewStream[0], 0, 0, 800, 450);
-            previewStream.addClass("results");
-            cameraImage.addClass("results");
-            analysisResults.addClass("results");
+            previewStream.addClass("showResults");
+            cameraImage.addClass("showResults");
+            analysisResults.addClass("showResults");
 
             // Save the canvas picture as a file
             logger.Info("Reading camera pixel data into Buffer");
@@ -97,6 +97,9 @@ class InspectionsView {
                 resultBuffer.push("</ul>");
 
                 // update final UI state
+                analysisResults.addClass("finished");
+                analysisResults.width(`${(settingsProvider.ModelThreshold * 30).toFixed(1)}em`);
+                $("#thresholdMarker").text(settingsProvider.ModelThreshold);
                 $("#resultsPlaceholder").html(resultBuffer.join(''));
                 $("#resultsStatus").hide();
                 $("span.barGraph").each(function() { 
@@ -111,9 +114,10 @@ class InspectionsView {
         $("#clear").on("click", () => {
             // Restore initial visual state
             logger.Info("Clearing image buffer...");
-            previewStream.removeClass("results");
-            cameraImage.removeClass("results");
-            analysisResults.removeClass("results");
+            previewStream.removeClass("showResults");
+            cameraImage.removeClass("showResults");
+            analysisResults.removeClass("showResults");
+            analysisResults.removeClass("finished");
             $("#resultsStatus").show();
             $("#resultsPlaceholder").html("");
             context.clearRect(0, 0, cameraImage[0].width, cameraImage[0].height);

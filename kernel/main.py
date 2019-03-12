@@ -40,6 +40,8 @@ def compute_results(inputFile):
 
         #######################################################################
 
+        # SAMPLE CODE TO RETURN LABELS + WEIGHTS...PLUG INTO ANY MODEL APPROPRIATE
+
         # simulate some computational work
         time.sleep(2)
 
