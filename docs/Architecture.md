@@ -1,6 +1,6 @@
 ### Architecture
 
-The architecutre of the demo app is fairly straightforward, following the typical pattern for Electron-style apps. 
+The architecutre of the demo app is fairly straightforward, following the typical pattern for Electron-style apps (red arrows represent the compute data path):
 
 ![Architecture Diagram](architecture.png)
 
