@@ -10,6 +10,14 @@ const logger = require("../services/LoggingProvider");
 const settingsProvider = require("../services/SettingsProvider");
 const kernelOperations = require("../services/KernelOperations");
 
+const RES_LOG_SETUP_PREVIEW = "Setting up media preview for device";
+const RES_LOG_POPULATING_MEDIA_DEVICES = "Populating list of avaiable media devices";
+const RES_LOG_CHANGING_DEVICE = "Changing selected media device";
+const RES_LOG_SELECT_DEFAULT_DEVICE = "Selecting default media device";
+const RES_LOG_ACQUIRE_IMAGE = "Acquiring image for analysis";
+const RES_LOG_READING_PIXEL_DATA = "Reading camera pixel data into Buffer";
+const RES_LOG_CLEAR_PIXEL_DATA = "Clearing image buffer";
+
 class InspectionsView {
 
     constructor() {
@@ -25,7 +33,7 @@ class InspectionsView {
 
         // Get access to the camera!
         const setupCameraPreview = (deviceId) => {
-            logger.Info(`Setting up media preview for device: ${deviceId}`);
+            logger.Info(`${RES_LOG_SETUP_PREVIEW}: ${deviceId}`);
             // Not adding `{ audio: true }` since we only want video access
             navigator.mediaDevices.getUserMedia({ 
                 video: {
@@ -43,7 +51,7 @@ class InspectionsView {
             });
         };
         
-        logger.Info("Populating list of available media devices");
+        logger.Info(RES_LOG_POPULATING_MEDIA_DEVICES);
         let deviceList = $("#deviceList");        
         for (let device of settingsProvider.MediaDevices) {
             let option = new Option(device.label, device.deviceId);
@@ -54,36 +62,37 @@ class InspectionsView {
         }
 
         deviceList.on("change", () => {
-            logger.Info("Changing selected media device...");
+            logger.Info(RES_LOG_CHANGING_DEVICE);
             setupCameraPreview(deviceList[0].selectedOptions[0].value);
         });
 
         // If there is at least one media device present, setup a preview
         if (deviceList[0].options.length > 0){
-            logger.Info("Selecting default media device");
+            logger.Info(RES_LOG_SELECT_DEFAULT_DEVICE);
             setupCameraPreview(deviceList[0].selectedOptions[0].value);
         }
 
         // Trigger photo take
         $("#snap").on("click", async () => {
             // Update visual state to show results
-            logger.Info("Acquiring image for analysis - updating UI state");
+            logger.Info(RES_LOG_ACQUIRE_IMAGE);
             context.drawImage(previewStream[0], 0, 0, 800, 450);
             previewStream.addClass("showResults");
             cameraImage.addClass("showResults");
             analysisResults.addClass("showResults");
 
             // Save the canvas picture as a file
-            logger.Info("Reading camera pixel data into Buffer");
+            logger.Info(RES_LOG_READING_PIXEL_DATA);
             let dataUrl = cameraImage[0].toDataURL();
             let rawData = dataUrl.replace(/^data:image\/\w+;base64,/, "");
             let blob = Buffer.from(rawData, 'base64');
 
             // Call kernel operation
             try {
+                // compute
                 let results = await this.kernelOperations.SubmitInputJob(blob);
 
-                // Generate label / weight display
+                // Generate label / weight display for bar graph
                 let resultBuffer = [];            
                 resultBuffer.push("<ul>");
                 for (let w in results.weights) {
@@ -96,12 +105,18 @@ class InspectionsView {
                 }
                 resultBuffer.push("</ul>");
 
-                // update final UI state
+                // update final UI state and show threshold marker
                 analysisResults.addClass("finished");
                 analysisResults.width(`${(settingsProvider.ModelThreshold * 30).toFixed(1)}em`);
                 $("#thresholdMarker").text(settingsProvider.ModelThreshold);
+
+                // Display the weight bars we generated above
                 $("#resultsPlaceholder").html(resultBuffer.join(''));
+
+                // Hide the "busy" message
                 $("#resultsStatus").hide();
+
+                // Set the width of the bar graph to trigger animations
                 $("span.barGraph").each(function() { 
                     $(this).width(`${$(this).data("width")}em`);
                 });
@@ -112,8 +127,8 @@ class InspectionsView {
         });
 
         $("#clear").on("click", () => {
-            // Restore initial visual state
-            logger.Info("Clearing image buffer...");
+            // Restore initial visual state..reset original state
+            logger.Info(RES_LOG_CLEAR_PIXEL_DATA);
             previewStream.removeClass("showResults");
             cameraImage.removeClass("showResults");
             analysisResults.removeClass("showResults");
