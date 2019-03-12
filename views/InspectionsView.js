@@ -9,6 +9,7 @@ const $ = require("jquery");
 const logger = require("../services/LoggingProvider");
 const settingsProvider = require("../services/SettingsProvider");
 const kernelOperations = require("../services/KernelOperations");
+const decisionWorkflow = require("../services/DecisionWorkflow");
 
 const RES_LOG_SETUP_PREVIEW = "Setting up media preview for device";
 const RES_LOG_POPULATING_MEDIA_DEVICES = "Populating list of avaiable media devices";
@@ -29,6 +30,7 @@ class InspectionsView {
         const previewStream = $("#previewStream");
         const cameraImage = $("#cameraImage");
         const analysisResults = $(".analysisResults");
+        const workflowResults = $(".desicionWorkflowResults");
         const context = cameraImage[0].getContext("2d");
 
         // Get access to the camera!
@@ -91,6 +93,7 @@ class InspectionsView {
             try {
                 // compute
                 let results = await this.kernelOperations.SubmitInputJob(blob);
+                let workflowMessage = decisionWorkflow.EvaluateResults(results.weights, results.labels, settingsProvider.ModelThreshold);
 
                 // Generate label / weight display for bar graph
                 let resultBuffer = [];            
@@ -99,7 +102,7 @@ class InspectionsView {
                     let label = results.labels[w];
                     let weight = results.weights[w];                
                     let minWidth = 0.25;
-                    let maxWidth = 28;
+                    let maxWidth = 30;
                     let width = Math.max(minWidth, weight * maxWidth);
                     resultBuffer.push(`<li>${label}<span class="barGraph" data-width="${width.toFixed(1)}"></span></li>`);
                 }
@@ -118,8 +121,13 @@ class InspectionsView {
 
                 // Set the width of the bar graph to trigger animations
                 $("span.barGraph").each(function() { 
-                    $(this).width(`${$(this).data("width")}em`);
+                    let myWidth = $(this).data("width");
+                    $(this).width(`${myWidth}em`);
                 });
+
+                // Get and display workflow results
+                workflowResults.addClass("finished");
+                $("#workflowMessage").text(workflowMessage);
             } catch (err) {
                 alert(`ERROR: ${err}`);
                 $("#clear").click();        
@@ -133,6 +141,7 @@ class InspectionsView {
             cameraImage.removeClass("showResults");
             analysisResults.removeClass("showResults");
             analysisResults.removeClass("finished");
+            workflowResults.removeClass("finished");
             $("#resultsStatus").show();
             $("#resultsPlaceholder").html("");
             context.clearRect(0, 0, cameraImage[0].width, cameraImage[0].height);
