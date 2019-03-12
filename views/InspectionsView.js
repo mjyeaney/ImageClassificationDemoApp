@@ -53,26 +53,32 @@ class InspectionsView {
             });
         };
         
-        logger.Info(RES_LOG_POPULATING_MEDIA_DEVICES);
-        let deviceList = $("#deviceList");        
-        for (let device of settingsProvider.MediaDevices) {
-            let option = new Option(device.label, device.deviceId);
-            if (device.deviceId === settingsProvider.DefaultMediaDeviceId){
-                option.selected = true;
+        const populateMediaDevices = () => {
+            logger.Info(RES_LOG_POPULATING_MEDIA_DEVICES);
+            let deviceList = $("#deviceList");        
+            for (let device of settingsProvider.MediaDevices) {
+                let option = new Option(device.label, device.deviceId);
+                if (device.deviceId === settingsProvider.DefaultMediaDeviceId){
+                    option.selected = true;
+                }
+                deviceList[0].options.add(option);
             }
-            deviceList[0].options.add(option);
-        }
 
-        deviceList.on("change", () => {
-            logger.Info(RES_LOG_CHANGING_DEVICE);
-            setupCameraPreview(deviceList[0].selectedOptions[0].value);
-        });
+            // When the user changes the media device, update preview
+            deviceList.on("change", () => {
+                logger.Info(RES_LOG_CHANGING_DEVICE);
+                setupCameraPreview(deviceList[0].selectedOptions[0].value);
+            });
 
-        // If there is at least one media device present, setup a preview
-        if (deviceList[0].options.length > 0){
-            logger.Info(RES_LOG_SELECT_DEFAULT_DEVICE);
-            setupCameraPreview(deviceList[0].selectedOptions[0].value);
-        }
+            // If there is at least one media device present, setup a preview
+            if (deviceList[0].options.length > 0){
+                logger.Info(RES_LOG_SELECT_DEFAULT_DEVICE);
+                setupCameraPreview(deviceList[0].selectedOptions[0].value);
+            }
+        };
+
+        // Get a list of media devices
+        populateMediaDevices();
 
         // Trigger photo take
         $("#snap").on("click", async () => {
