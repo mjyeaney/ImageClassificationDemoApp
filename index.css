@@ -175,16 +175,15 @@ table, p, ul, ol, dl { margin-bottom: 1em; }
 .analysisResults.finished { border-right: 2px dashed red; }
 .analysisResults.finished #thresholdMarker { display: block; }
 
-.desicionWorkflowResults { 
-    display: none; 
-}
-.desicionWorkflowResults.finished {
-    display: block;
+.desicionWorkflowResults.finished p {
+    opacity: 1;
 }
 .desicionWorkflowResults p {
+    opacity: 0;
     font-size: 2em;
     text-align: center;
     margin-top: 3em;
+    transition: opacity ease-in .25s;
 }
 
 .mediaButtons { position: absolute; top: 39em; left: 1em; }

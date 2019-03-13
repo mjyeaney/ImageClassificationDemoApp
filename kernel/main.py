@@ -8,6 +8,7 @@ import io
 import json
 import logging
 import random
+import tensorflowModel as tf
 
 # setup logging
 root = logging.getLogger()
@@ -93,6 +94,8 @@ def init():
     Main startup routine; essentially gets the polling loop running.
     """
     logging.info("Starting main polling loop")
+
+    tf.ScoreModel()
 
     global POLL_DELAY
 
