@@ -1,1 +1,1 @@
-{"DefaultMediaDeviceId":"f3945d4e585d244ab1bc7c74795675d710e406c05c17654dabaab54fe684944b","ModelThreshold":"0.8","KernelCommand":"python.exe","KernelArguments":"./kernel/main.py","ModelUrl":"","ModelLastUpdate":"Unknown","ModelLastUpdateStatus":"Unknown","LogFilePath":"./data/log.txt"}
+{"DefaultMediaDeviceId":"f3945d4e585d244ab1bc7c74795675d710e406c05c17654dabaab54fe684944b","ModelThreshold":"0.95","KernelCommand":"python.exe","KernelArguments":"./kernel/main.py","ModelUrl":"","ModelLastUpdate":"Unknown","ModelLastUpdateStatus":"Unknown","LogFilePath":"./data/log.txt"}

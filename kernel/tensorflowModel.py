@@ -14,17 +14,6 @@ labels = []
 # These are set to the default names from exported models, update as needed.
 filename = "./data/models/model.pb"
 labels_filename = "./data/models/labels.txt"
-
-# Import the TF graph
-with tf.gfile.GFile(filename, 'rb') as f:
-    graph_def.ParseFromString(f.read())
-    tf.import_graph_def(graph_def, name='')
-
-# Create a list of labels.
-with open(labels_filename, 'rt') as lf:
-    for l in lf:
-        labels.append(l.strip())
-
 def convert_to_opencv(image):
     # RGB -> BGR conversion is performed as well.
     r,g,b,a = np.array(image).T
@@ -65,18 +54,22 @@ def update_orientation(image):
                 image = image.transpose(Image.FLIP_LEFT_RIGHT)
     return image
 
+def Init():
+    # Import the TF graph
+    with tf.gfile.GFile(filename, 'rb') as f:
+        graph_def.ParseFromString(f.read())
+        tf.import_graph_def(graph_def, name='')
+
+    # Create a list of labels.
+    with open(labels_filename, 'rt') as lf:
+        for l in lf:
+            labels.append(l.strip())
+
 def ScoreModel(imagePath):
-    # Load from a file
+    # Load from a file, rotate, convert format, and resize
     image = Image.open(imagePath)
-
-    # Update orientation based on EXIF tags, if the file has orientation info.
     image = update_orientation(image)
-
-    # Convert to OpenCV format
     image = convert_to_opencv(image)
-
-    # If the image has either w or h greater than 1600 we resize it down respecting
-    # aspect ratio such that the largest dimension is 1600
     image = resize_down_to_1600_max_dim(image)
 
     # We next get the largest center square
