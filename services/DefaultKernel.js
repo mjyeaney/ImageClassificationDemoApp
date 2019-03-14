@@ -28,10 +28,10 @@ class DefaultKernel extends emitter {
             logger.Info(data);
         });
 
-        this.child_process.stderr.on("data", (data) => {
-            logger.Error(data);
-            this.emit("error", data);
-        });
+        // this.child_process.stderr.on("data", (data) => {
+        //     logger.Error(data);
+        //     this.emit("error", data);
+        // });
 
         logger.Info(RES_LOG_KERNEL_STARTED);
     }

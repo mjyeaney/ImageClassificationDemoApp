@@ -44,22 +44,30 @@ def compute_results(inputFile):
         # SAMPLE CODE TO RETURN LABELS + WEIGHTS...PLUG INTO ANY MODEL APPROPRIATE
 
         # simulate some computational work
-        time.sleep(2)
+        # time.sleep(2)
 
         # Just a sample results structure - real one can plug in later
+        # results = {
+        #     "weights": [
+        #         random.uniform(0, 1),
+        #         random.uniform(0, 1),
+        #         random.uniform(0, 1),
+        #         random.uniform(0, 1)
+        #     ],
+        #     "labels": [
+        #         "No Problems",
+        #         "Needs cleaned",
+        #         "Damaged",
+        #         "Critical"
+        #     ]
+        # }
+
+        # SAMPLE CODE TO CALL TESORFLOW MODEL
+
+        labels, weights = tf.ScoreModel("./data/images/" + inputFile)
         results = {
-            "weights": [
-                random.uniform(0, 1),
-                random.uniform(0, 1),
-                random.uniform(0, 1),
-                random.uniform(0, 1)
-            ],
-            "labels": [
-                "No Problems",
-                "Needs cleaned",
-                "Damaged",
-                "Critical"
-            ]
+            "weights": weights,
+            "labels": labels
         }
 
         #######################################################################
@@ -94,8 +102,6 @@ def init():
     Main startup routine; essentially gets the polling loop running.
     """
     logging.info("Starting main polling loop")
-
-    tf.ScoreModel()
 
     global POLL_DELAY
 
