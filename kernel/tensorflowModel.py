@@ -6,10 +6,12 @@ import numpy as np
 import cv2
 import tensorflow as tf
 import os
+import logging
 
 # Model definitions along with labels
 graph_def = tf.GraphDef()
 labels = []
+network_input_size = 0
 
 # These are set to the default names from exported models, update as needed.
 filename = "./data/models/model.pb"
@@ -20,7 +22,7 @@ def convert_to_opencv(image):
     opencv_image = np.array([b,g,r]).transpose()
     return opencv_image
 
-def crop_center(img,cropx,cropy):
+def crop_center(img, cropx, cropy):
     h, w = img.shape[:2]
     startx = w//2-(cropx//2)
     starty = h//2-(cropy//2)
@@ -55,6 +57,8 @@ def update_orientation(image):
     return image
 
 def Init():
+    global network_input_size
+
     # Import the TF graph
     with tf.gfile.GFile(filename, 'rb') as f:
         graph_def.ParseFromString(f.read())
@@ -64,6 +68,12 @@ def Init():
     with open(labels_filename, 'rt') as lf:
         for l in lf:
             labels.append(l.strip())
+
+    # Get the input size of the model
+    with tf.Session() as sess:
+        input_tensor_shape = sess.graph.get_tensor_by_name('Placeholder:0').shape.as_list()
+
+    network_input_size = input_tensor_shape[1]
 
 def ScoreModel(imagePath):
     # Load from a file, rotate, convert format, and resize
@@ -80,21 +90,18 @@ def ScoreModel(imagePath):
     # Resize that square down to 256x256
     augmented_image = resize_to_256_square(max_square_image)
 
-    # Get the input size of the model
-    with tf.Session() as sess:
-        input_tensor_shape = sess.graph.get_tensor_by_name('Placeholder:0').shape.as_list()
-    network_input_size = input_tensor_shape[1]
-
     # Crop the center for the specified network_input_Size
     augmented_image = crop_center(augmented_image, network_input_size, network_input_size)
 
     # These names are part of the model and cannot be changed.
     output_layer = 'loss:0'
     input_node = 'Placeholder:0'
-
+    
+    logging.info("Scoring model...")
     with tf.Session() as sess:
         prob_tensor = sess.graph.get_tensor_by_name(output_layer)
         predictions, = sess.run(prob_tensor, {input_node: [augmented_image] })
+    logging.info("Done!")
     
     # return all of the results mapping labels to probabilities.
     weights = []
