@@ -2,6 +2,8 @@
 
 Sample cross-platofrm application framework demonstrating interaction between ElectronJS and a Python kernel. The goal of this application isn't any specific model, but rather a method for getting class labels and weights from an underlying kernel.
 
+![Screenshot](docs/icda.png)
+
 ### Topics
 
 * [Prerequisites](#Prerequisites)
